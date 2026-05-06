@@ -93,6 +93,12 @@ class MultiSegmentHeightEstimator:
 
         landmarks = keypoints["landmarks"]
         virtual_points = self._build_virtual_points(landmarks)
+        component_positions = self._build_component_positions(landmarks, virtual_points)
+        missing_components = [
+            name
+            for name, point in component_positions.items()
+            if point is None
+        ]
 
         segment_lengths_px: dict[str, float] = {}
         for segment_name, start_name, end_name in self._SEGMENTS:
@@ -114,6 +120,8 @@ class MultiSegmentHeightEstimator:
             "segments_px": {name: round(length, 2) for name, length in segment_lengths_px.items()},
             "segments_cm": segment_lengths_cm,
             "virtual_points": virtual_points,
+            "component_positions": component_positions,
+            "missing_components": missing_components,
         }
 
     def _build_virtual_points(self, landmarks: dict[str, Any]) -> dict[str, tuple[float, float] | None]:
@@ -157,3 +165,30 @@ class MultiSegmentHeightEstimator:
             return None
         selected = min(visible, key=lambda point: point.y)
         return (selected.x, selected.y)
+
+    def _build_component_positions(
+        self,
+        landmarks: dict[str, Any],
+        virtual_points: dict[str, tuple[float, float] | None],
+    ) -> dict[str, tuple[float, float] | None]:
+        """Return key body components used by the height measurement pipeline."""
+        return {
+            "head_top": virtual_points.get("HEAD_TOP"),
+            "nose": self._extract_if_visible(landmarks, "NOSE"),
+            "shoulder_center": virtual_points.get("SHOULDER_CENTER"),
+            "hip_center": virtual_points.get("HIP_CENTER"),
+            "knee_center": virtual_points.get("KNEE_CENTER"),
+            "ankle_center": virtual_points.get("ANKLE_CENTER"),
+            "heel_center": virtual_points.get("HEEL_CENTER"),
+        }
+
+    def _extract_if_visible(
+        self,
+        landmarks: dict[str, Any],
+        name: str,
+        min_visibility: float = 0.5,
+    ) -> tuple[float, float] | None:
+        point = landmarks.get(name)
+        if point is None or point.visibility < min_visibility:
+            return None
+        return (point.x, point.y)

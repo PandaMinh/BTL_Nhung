@@ -110,6 +110,8 @@ class HeightMeasurementPipeline:
             "height_final_cm": height_final,
             "message": "Đo chiều cao thành công",
             "segments_cm": measurement["segments_cm"],
+            "component_positions": measurement["component_positions"],
+            "missing_components": measurement["missing_components"],
             "quality": {
                 "mat_quality": mat_detection.quality_score,
                 **quality_metrics,
