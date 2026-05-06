@@ -1,0 +1,7 @@
+path: ./datasets/yolo_format
+train: images/train
+val: images/val
+
+names:
+  0: person
+  1: reference_mat

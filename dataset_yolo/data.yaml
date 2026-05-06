@@ -1,0 +1,6 @@
+path: dataset_yolo
+train: images/train
+val: images/val
+
+names:
+  0: reference_mat
