@@ -333,3 +333,71 @@ Thực hiện theo thứ tự:
   - storage (DB + object storage)
 - Nên chuẩn hóa format JSON response để mobile xử lý ổn định.
 
+## 11. Phân Công Team (MVP 7 Ngày)
+
+### 11.1 Core AI
+- **Nguyễn Thị Minh** (Owner)
+- Phạm vi:
+  - Person detection
+  - Mat detection
+  - Pose estimation
+  - Height measurement
+  - Quality check + API output cho app
+- Deliverables:
+  - API trả `height_cm`, `confidence`, `warning_message`
+  - Checkpoints đặt trong `ai_core/ai-service/checkpoints/`
+  - Tài liệu input/output để mobile tích hợp
+
+### 11.2 RCM + UI
+- **Nguyễn Thu Trang** (Owner)
+- Phạm vi:
+  - Thiết kế UI các màn hình chính (đo, kết quả, lịch sử)
+  - Hiển thị confidence/cảnh báo rõ ràng
+  - Rule-based recommendations (RCM)
+  - Chuẩn hóa UX/UI toàn app
+- Deliverables:
+  - Bộ màn hình UI thống nhất
+  - Module gợi ý cơ bản theo kết quả đo
+
+### 11.3 App Functions (Logic + Flow)
+- **Trần Thanh Thảo** (Owner)
+- Phạm vi:
+  - Flow đo: chọn người -> chọn thảm -> bắt đầu đo -> nhận kết quả
+  - Gọi API và nhận response
+  - Lưu lịch sử đo cục bộ/qua backend
+  - Điều phối state/navigation
+- Deliverables:
+  - Flow đo end-to-end hoạt động
+  - History view có dữ liệu đo
+
+### 11.4 Mobile Camera
+- **Ngô Thị Hoa** (Owner)
+- Phạm vi:
+  - Kết nối camera iPhone qua Expo
+  - Preview realtime
+  - Chụp 3-5 frame
+  - Resize/compress ảnh
+  - Xử lý permission + lỗi camera
+- Deliverables:
+  - Màn hình camera chạy ổn định trên Expo Go
+  - Payload ảnh chuẩn để gửi API
+
+### 11.5 Mốc Theo Ngày (Gợi Ý)
+- Day 1-2:
+  - Minh: person + mat detection baseline
+  - Hoa: camera preview + capture
+  - Thảo: skeleton flow + API service wrapper
+  - Trang: wireframe + design system cơ bản
+- Day 3-4:
+  - Minh: pose + height baseline
+  - Hoa: compress/resize + gửi frame
+  - Thảo: kết nối API thật + xử lý lỗi
+  - Trang: UI kết quả + cảnh báo
+- Day 5-6:
+  - Minh: quality check + confidence tuning
+  - Hoa: test thiết bị thật và ổn định capture
+  - Thảo: history flow
+  - Trang: RCM rule-based + polish UI
+- Day 7:
+  - Tích hợp toàn hệ thống, test sai số, fix bug, demo.
+
